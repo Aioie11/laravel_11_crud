@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Simple Laravel 11 CRUD Application Tutorial</title>
+    <title></title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="container">
-        <h3 class="mt-3">Simple Laravel 11 CRUD Application Tutorial</h3>
+        <h3 class="mt-4">University of San Jose - Recoletos</h3>
         
         <!-- Content Section -->
         @yield('content')

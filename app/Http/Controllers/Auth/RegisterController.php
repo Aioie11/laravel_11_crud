@@ -20,14 +20,12 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($user);
-
-        return redirect('/dashboard'); // Change this to your intended route
+        return redirect('/login')->with('success', 'Registration successful! Please login.');
     }
 }
