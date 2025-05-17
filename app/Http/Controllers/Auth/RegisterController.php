@@ -26,8 +26,6 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($user);
-
-        return redirect('/dashboard'); // Change this to your intended route
+        return redirect()->route('login')->with('success', 'Registration successful! Please login.');
     }
 }

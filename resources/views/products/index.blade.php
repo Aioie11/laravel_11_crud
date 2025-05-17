@@ -11,12 +11,21 @@
         @endsession
 
         <div class="card">
-            <div class="card-header">Product List</div>
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>Product List</span>
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
             <div class="card-body">
                 <a href="{{ route('products.create') }}" class="btn btn-success btn-sm my-2">
                     <i class="bi bi-plus-circle"></i> Add New Product
                 </a>
-
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -25,6 +34,7 @@
                             <th scope="col">Name</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Price</th>
+                            <th scope="col">Image</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -36,6 +46,13 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->quantity }}</td>
                                 <td>{{ $product->price }}</td>
+                                <td>
+                                    @if($product->image)
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="img-thumbnail" style="max-height: 100px; width: auto; object-fit: contain;">
+                                    @else
+                                        <span class="text-muted">No image</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <form action="{{ route('products.destroy', $product->id) }}" method="post">
                                         @csrf
@@ -55,7 +72,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6">
+                                <td colspan="7">
                                     <span class="text-danger">
                                         <strong>No Product Found!</strong>
                                     </span>

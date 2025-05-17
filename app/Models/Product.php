@@ -18,5 +18,14 @@ class Product extends Model
         'quantity',
         'price',
         'description',
+        'image',
     ];
+
+    /**
+     * Get the image URL attribute.
+     */
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? asset('storage/' . $this->image) : null;
+    }
 }

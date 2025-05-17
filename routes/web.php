@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 
 // Default landing page
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('register');
 });
 
 // Resourceful routes for product CRUD
