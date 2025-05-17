@@ -1,83 +1,97 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row justify-content-center mt-3">
-    <div class="col-md-8">
-        @session('success')
-            <div class="alert alert-success" role="alert">
-                {{ $value }}
-            </div>
-        @endsession
-
-        <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <div class="float-start">Edit Product</div>
-                <div class="float-end">
-                    <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm">&larr; Back</a>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Edit Product</h5>
+                        <a href="{{ route('products.index') }}" class="btn btn-secondary btn-sm">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="card-body">
-                <form action="{{ route('products.update', $product->id) }}" method="post">
-                    @csrf
-                    @method("PUT")
-
-                    <div class="mb-3 row">
-                        <label for="code" class="col-md-4 col-form-label text-md-end text-start">Code</label>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ $product->code }}">
+                <div class="card-body">
+                    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        
+                        <div class="mb-3">
+                            <label for="code" class="form-label">Product Code</label>
+                            <input type="text" class="form-control @error('code') is-invalid @enderror" 
+                                id="code" name="code" value="{{ old('code', $product->code) }}" required>
                             @error('code')
-                                <span class="text-danger">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <label for="name" class="col-md-4 col-form-label text-md-end text-start">Name</label>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $product->name }}">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Product Name</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                id="name" name="name" value="{{ old('name', $product->name) }}" required>
                             @error('name')
-                                <span class="text-danger">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <label for="quantity" class="col-md-4 col-form-label text-md-end text-start">Quantity</label>
-                        <div class="col-md-6">
-                            <input type="number" class="form-control @error('quantity') is-invalid @enderror" id="quantity" name="quantity" value="{{ $product->quantity }}">
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control @error('quantity') is-invalid @enderror" 
+                                id="quantity" name="quantity" value="{{ old('quantity', $product->quantity) }}" required>
                             @error('quantity')
-                                <span class="text-danger">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <label for="price" class="col-md-4 col-form-label text-md-end text-start">Price</label>
-                        <div class="col-md-6">
-                            <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ $product->price }}">
-                            @error('price')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" 
+                                    id="price" name="price" value="{{ old('price', $product->price) }}" required>
+                                @error('price')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <label for="description" class="col-md-4 col-form-label text-md-end text-start">Description</label>
-                        <div class="col-md-6">
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ $product->description }}</textarea>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control @error('description') is-invalid @enderror" 
+                                id="description" name="description" rows="3">{{ old('description', $product->description) }}</textarea>
                             @error('description')
-                                <span class="text-danger">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <div class="col-md-6 offset-md-4">
-                            <input type="submit" class="btn btn-primary" value="Update">
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Product Image</label>
+                            @if($product->image)
+                                <div class="mb-2">
+                                    <img src="{{ $product->image_url }}" alt="Current Product Image" class="img-thumbnail" style="max-height: 200px;">
+                                    <div class="form-text">Current image</div>
+                                </div>
+                            @endif
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" 
+                                id="image" name="image" accept="image/*">
+                            <div class="form-text">Leave empty to keep current image</div>
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                    </div>
-                </form>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Update Product
+                            </button>
+                            <a href="{{ route('products.index') }}" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -1,76 +1,82 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row justify-content-center mt-3">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <div class="float-start">
-                    Add New Product
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Add New Product</h5>
+                        <a href="{{ route('products.index') }}" class="btn btn-secondary btn-sm">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
                 </div>
-                <div class="float-end">
-                    <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm">&larr; Back</a>
-                </div>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('products.store') }}" method="post">
-                    @csrf
-                    <div class="mb-3 row">
-                        <label for="code" class="col-md-4 col-form-label text-md-end text-start">Code</label>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ old('code') }}">
+                <div class="card-body">
+                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="code" class="form-label">Product Code</label>
+                            <input type="text" class="form-control @error('code') is-invalid @enderror" 
+                                id="code" name="code" value="{{ old('code') }}" required>
                             @error('code')
-                                <span class="text-danger">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <label for="name" class="col-md-4 col-form-label text-md-end text-start">Name</label>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Product Name</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                id="name" name="name" value="{{ old('name') }}" required>
                             @error('name')
-                                <span class="text-danger">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <label for="quantity" class="col-md-4 col-form-label text-md-end text-start">Quantity</label>
-                        <div class="col-md-6">
-                            <input type="number" class="form-control @error('quantity') is-invalid @enderror" id="quantity" name="quantity" value="{{ old('quantity') }}">
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control @error('quantity') is-invalid @enderror" 
+                                id="quantity" name="quantity" value="{{ old('quantity') }}" required>
                             @error('quantity')
-                                <span class="text-danger">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <label for="price" class="col-md-4 col-form-label text-md-end text-start">Price</label>
-                        <div class="col-md-6">
-                            <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}">
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" 
+                                id="price" name="price" value="{{ old('price') }}" required>
                             @error('price')
-                                <span class="text-danger">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <label for="description" class="col-md-4 col-form-label text-md-end text-start">Description</label>
-                        <div class="col-md-6">
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ old('description') }}</textarea>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control @error('description') is-invalid @enderror" 
+                                id="description" name="description" rows="3">{{ old('description') }}</textarea>
                             @error('description')
-                                <span class="text-danger">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
 
-                    <div class="mb-3 row">
-                        <div class="col-md-6 offset-md-4">
-                            <input type="submit" class="btn btn-primary" value="Add Product">
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Product Image</label>
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" 
+                                id="image" name="image">
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                    </div>
-                </form>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Save Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
