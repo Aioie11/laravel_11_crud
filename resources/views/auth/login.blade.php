@@ -1,72 +1,77 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="w-full max-w-md">
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Welcome back</h2>
-            <p class="mt-2 text-sm text-gray-600">Sign in to your account</p>
-        </div>
-        
-        <div class="bg-white/80 backdrop-blur-sm py-8 px-6 shadow-xl rounded-lg sm:px-10 border border-blue-100">
-            <form method="POST" action="{{ route('login') }}" class="space-y-6">
-                @csrf
-
-                <div>
-                    <label for="email" class="block text-sm font-medium text-blue-700">Email Address</label>
-                    <div class="mt-1">
-                        <input id="email" type="email" name="email" required 
-                            class="w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/50"
-                            placeholder="">
-                    </div>
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-0">Welcome Back</h3>
+                    <p class="mb-0">Please login to your account</p>
                 </div>
+                <div class="card-body p-4">
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
 
-                <div>
-                    <label for="password" class="block text-sm font-medium text-blue-700">Password</label>
-                    <div class="mt-1">
-                        <input id="password" type="password" name="password" required 
-                            class="w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/50"
-                            placeholder="">
-                    </div>
+                    @if($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                    id="email" name="email" value="{{ old('email') }}" 
+                                    placeholder="Enter your email" required>
+                            </div>
+                            @error('email')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" 
+                                    id="password" name="password" placeholder="Enter your password" required>
+                            </div>
+                            @error('password')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember" name="remember" type="checkbox" 
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-blue-300 rounded">
-                        <label for="remember" class="ml-2 block text-sm text-blue-700">Remember me</label>
+                <div class="card-footer text-center py-3">
+                    <div class="small">
+                        Don't have an account? 
+                        <a href="{{ route('register') }}" class="text-primary">Register here</a>
                     </div>
-
-                    <div class="text-sm">
-                        <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
-                            Forgot your password?
-                        </a>
-                    </div>
-                </div>
-
-                <div>
-                    <button type="submit" 
-                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out transform hover:scale-[1.02]">
-                        Sign in
-                    </button>
-                </div>
-            </form>
-
-            <div class="mt-6">
-                <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-blue-200"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white/80 text-blue-600">New to our platform?</span>
-                    </div>
-                </div>
-
-                <div class="mt-6 text-center">
-                    <a href="{{ route('register') }}" 
-                        class="font-medium text-blue-600 hover:text-blue-500 transition duration-150 ease-in-out">
-                        Create a new account
-                    </a>
                 </div>
             </div>
         </div>
